@@ -75,22 +75,14 @@
       outline: none;
     }
 
-    #searchIcon,
-    #micIcon {
+    #searchIcon {
       position: absolute;
       top: 50%;
+      left: 12px;
       transform: translateY(-50%);
       color: #ccc;
       font-size: 16px;
       cursor: pointer;
-    }
-
-    #searchIcon {
-      left: 12px;
-    }
-
-    #micIcon {
-      right: 12px;
     }
 
     .categories {
@@ -117,7 +109,7 @@
     }
 
     main {
-      padding: 100px 20px 30px;
+      padding: 120px 20px 40px;
       max-width: 1600px;
       margin: auto;
     }
@@ -214,7 +206,7 @@
       }
 
       main {
-        padding-top: 160px; /* Fixed spacing to prevent iframe from being hidden */
+        padding-top: 170px; /* extra space to prevent overlap */
       }
 
       #video-section {
@@ -222,7 +214,7 @@
       }
 
       #watch-player iframe {
-        height: 300px;
+        height: 280px;
       }
 
       #video-details h2 {
@@ -263,7 +255,6 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
   </style>
 </head>
 <body>
@@ -278,7 +269,6 @@
       <div class="search-container">
         <i class="fas fa-search" id="searchIcon"></i>
         <input type="text" id="searchInput" placeholder="Search...">
-        <i class="fas fa-microphone" id="micIcon"></i>
       </div>
     </div>
 
@@ -321,7 +311,6 @@
     const apiKey = 'AIzaSyBRLIQe6I96O0aXz1B_XlDjvsmOMqYP5l0';
     const searchInput = document.getElementById('searchInput');
     const searchIcon = document.getElementById('searchIcon');
-    const micIcon = document.getElementById('micIcon');
     const resultsDiv = document.getElementById('results');
     const player = document.getElementById('player');
     const videoSection = document.getElementById('video-section');
@@ -344,29 +333,6 @@
     searchIcon.addEventListener('click', () => {
       const query = searchInput.value.trim();
       if (query) fetchVideos(query);
-    });
-
-    micIcon.addEventListener('click', () => {
-      if ('webkitSpeechRecognition' in window) {
-        const recognition = new webkitSpeechRecognition();
-        recognition.lang = 'en-US';
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-
-        recognition.start();
-
-        recognition.onresult = function(event) {
-          const transcript = event.results[0][0].transcript;
-          searchInput.value = transcript;
-          fetchVideos(transcript);
-        };
-
-        recognition.onerror = function(event) {
-          alert('🎤 Mic Error: ' + event.error);
-        };
-      } else {
-        alert('Voice recognition not supported.');
-      }
     });
 
     async function fetchVideos(query) {
